@@ -120,6 +120,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
+mega-dados-venv
 .env
 .venv
 env/
