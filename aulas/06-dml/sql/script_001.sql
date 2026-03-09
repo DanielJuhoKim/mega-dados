@@ -10,7 +10,7 @@ CREATE TABLE equipe (
 
 CREATE TABLE jogador (
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(80) NOT NULL,
+    nome VARCHAR(100) NOT NULL,
     nome_equipe VARCHAR(30) NOT NULL,
     preferencia INTEGER,
     CONSTRAINT fk_equipe 
