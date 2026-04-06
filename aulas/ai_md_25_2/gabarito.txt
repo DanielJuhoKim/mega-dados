@@ -1,0 +1,186 @@
+sql_ex01 = """
+SELECT nome, profissao, empresa FROM convidado
+WHERE blocklisted != 1 AND cache < 700.00
+ORDER BY nome ASC;
+
+"""
+
+db(sql_ex01)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+sql_ex02 = """
+SELECT podcast.nome AS nome_podcast, 
+episodio.titulo AS titulo_episodio, 
+episodio.duracao_minutos AS duracao_minutos,
+podcast.categoria AS categoria 
+FROM podcast
+JOIN episodio ON podcast.id_podcast = episodio.id_podcast
+HAVING duracao_minutos > 70
+ORDER BY duracao_minutos DESC;
+"""
+
+db(sql_ex02)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+sql_ex03 = """
+SELECT host.nome AS nome_host,
+cache_por_episodio AS cache_por_episodio,
+COUNT(podcast.id_podcast) AS qtde_podcast,
+COUNT(episodio.id_episodio) AS qtde_episodio
+FROM host
+LEFT JOIN podcast_host ON host.id_host = podcast_host.id_hot
+LEFT JOIN podcast ON podcast_host.id_podcast = podcast.id_podcast
+LEFT JOIN episodio ON podcast.id_podcast = episodio.id_podcast
+GROUP BY host.id_host
+"""
+
+db(sql_ex03)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+sql_ex04 = """
+CREATE OR REPLACE VIEW v_relatorio_anunciantes AS
+SELECT anunciante.nome_empresa,
+    anunciante.segmento_mercado,
+    COUNT(anuncio.id_anunciante) AS qtde_anuncios,
+    COUNT(anuncio_episodio.id_anuncio_episodio) AS qtde_leituras,
+    SUM(anuncio_episodio.valor_pago) AS receita_total,
+    AVG(anuncio.valor_por_mencao) AS receita_media_mencao
+FROM anunciante
+    JOIN anuncio ON anunciante.id_anunciante = anuncio.id_anunciante AND anuncio.ativo = 1
+    JOIN anuncio_episodio ON anuncio.id_anuncio = anuncio_episodio.id_anuncio AND lido_completo = 1
+GROUP BY anunciante.id_anunciante
+HAVING qtde_anuncios >= 3
+ORDER BY receita_total DESC;
+"""
+
+db(sql_ex04)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+sql_ex05 = """
+INSERT INTO tipo_anuncio (id_tipo_anuncio,nome, descricao, duracao_segundos, preco_base) 
+VALUES (5,
+'Sponsored Content',
+'Conteúdo patrocinado integrado ao episódio com narrativa natural',
+60,
+300.00)
+"""
+
+# Descomente a linha abaixo para rodar localmente
+db(sql_ex05)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+sql_ex06 = """
+ALTER TABLE mensagem ADD COLUMN texto TEXT,
+ADD CONSTRAINT id_episodio FOREIGN KEY (id_episodio) REFERENCES episodio(id_episodio),
+MODIFY column data_envio DATETIME;
+"""
+
+# Descomente a linha abaixo para rodar localmente
+db(sql_ex06)
